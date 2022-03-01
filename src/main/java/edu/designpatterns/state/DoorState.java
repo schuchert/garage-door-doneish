@@ -1,28 +1,70 @@
 package edu.designpatterns.state;
 
-public class DoorState {
+abstract class DoorState {
+    public abstract void click(GarageDoor context);
+    public abstract String getMessage();
+
+    public void sensor(GarageDoor context) {
+        context.state = new ClosedState();
+    }
+}
+
+class ClosedState extends DoorState {
+    public String getMessage() {
+        return "Closed";
+    }
 
     public void click(GarageDoor context) {
-        if ("Closed".equals(context.messageString)) {
-            context.setMessageString("Opening");
-        } else if ("Opening".equals(context.messageString)) {
-            context.resumeState = "Closing";
-            context.setMessageString("Stopped");
-        } else if ("Closing".equals(context.messageString)) {
-            context.resumeState = "Opening";
-            context.setMessageString("Stopped");
-        } else if ("Stopped".equals(context.messageString)) {
-            context.setMessageString(context.resumeState);
-        } else {
-            context.setMessageString("Closing");
-        }
+        context.state = new OpeningState();
+    }
+}
+
+class ClosingState extends DoorState {
+    public String getMessage() {
+        return "Closing";
+    }
+
+    public void click(GarageDoor context) {
+        context.resumeState = "Opening";
+        context.state = new StoppedState();
+    }
+}
+
+class OpeningState extends DoorState {
+    public String getMessage() {
+        return "Opening";
+    }
+
+    public void click(GarageDoor context) {
+        context.resumeState = "Closing";
+        context.state = new StoppedState();
     }
 
     public void sensor(GarageDoor context) {
-        if ("Opening".equals(context.messageString)) {
-            context.setMessageString("Open");
+        context.state = new OpenState();
+    }
+}
+
+class StoppedState extends DoorState {
+    public String getMessage() {
+        return "Stopped";
+    }
+
+    public void click(GarageDoor context) {
+        if (context.resumeState.equals("Opening")) {
+            context.state = new OpeningState();
         } else {
-            context.setMessageString("Closed");
+            context.state = new ClosingState();
         }
+    }
+}
+
+class OpenState extends DoorState {
+    public String getMessage() {
+        return "Open";
+    }
+
+    public void click(GarageDoor context) {
+        context.state = new ClosingState();
     }
 }

@@ -1,23 +1,22 @@
 package edu.designpatterns.state;
 
 public class GarageDoor {
-	String messageString = "Closed";
 	String resumeState;
-	private DoorState state = new DoorState();
+	DoorState state;
+
+	public GarageDoor() {
+		state = new ClosedState();
+	}
 
 	public void click() {
 		state.click(this);
 	}
 
-	void setMessageString(String string) {
-		messageString = string;
-	}
-
-	public String getMessageString() {
-		return messageString;
-	}
-
 	public void sensor() {
 		state.sensor(this);
+	}
+
+	public String getMessage() {
+		return state.getMessage();
 	}
 }

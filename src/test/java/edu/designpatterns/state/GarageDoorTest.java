@@ -87,7 +87,7 @@ public class GarageDoorTest {
 	}
 	
 	private void assertDoorMessage(String expected) {
-		assertEquals(expected, garageDoor.getMessageString());
+		assertEquals(expected, garageDoor.getMessage());
 	}
 
 }
