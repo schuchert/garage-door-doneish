@@ -1,23 +1,12 @@
 package edu.designpatterns.state;
 
 public class GarageDoor {
-	private String messageString = "Closed";
-	private String resumeState;
+	String messageString = "Closed";
+	String resumeState;
+	private DoorState state = new DoorState();
 
 	public void click() {
-		if ("Closed".equals(messageString)) {
-			setMessageString("Opening");
-		} else if ("Opening".equals(messageString)) {
-			resumeState = "Closing";
-			setMessageString("Stopped");
-		} else if ("Closing".equals(messageString)) {
-			resumeState = "Opening";
-			setMessageString("Stopped");
-		} else if ("Stopped".equals(messageString)) {
-			setMessageString(resumeState);
-		} else {
-			setMessageString("Closing");
-		}
+		state.click(this);
 	}
 
 	void setMessageString(String string) {
@@ -29,10 +18,6 @@ public class GarageDoor {
 	}
 
 	public void sensor() {
-		if ("Opening".equals(messageString)) {
-			setMessageString("Open");
-		} else {
-			setMessageString("Closed");
-		}
+		state.sensor(this);
 	}
 }
